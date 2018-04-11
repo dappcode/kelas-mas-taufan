@@ -58,4 +58,51 @@ class SantriController extends Controller
         return redirect()->route('santri.index');
 
     }
+
+    public function show($id)
+    {
+        $santri = Santri::findOrFail($id);  // -> Mencari ID nya 
+                                            // -> findOrFail = untuk jika id yang di cari tidak ada maka dia akan memunculkan pesan eror
+        // dd($santri);
+
+        return view('santri.show', compact('santri')); // -> Compact untuk mengirim data dari variabel yang di atas
+
+    }
+
+    public function edit($id)
+    {
+        $santri = Santri::findOrFail($id);
+
+        return view('santri.edit', compact('santri'));
+    }
+
+    public function update($id, Request $request)
+    {
+        $santri = Santri::findOrFail($id);
+
+        // Cara 1
+        // $santri->nama = $request->nama;
+        // $santri->umur = $request->umur;
+        // $santri->alamat = $request->alamat;
+        // $santri->jenis_kelamin = $request->jenis_kelamin;
+        // $santri->save();
+
+        // Cara 2
+        $santri->update([
+            'nama' => $request->nama,
+            'umur' => $request->umur,
+            'alamat' => $request->alamat,
+            'jenis_kelamin' => $request->jenis_kelamin,
+        ]);
+
+        return redirect()->route('santri.index');
+    }
+
+    public function destroy($id)
+    {
+        $santri = Santri::findOrFail($id);
+        $santri->delete();
+
+        return redirect()->route('santri.index');
+    }
 }
